@@ -1,0 +1,193 @@
+var r2 = Math.sqrt(2);
+
+//[1]
+
+Tile.prototype.red2whiteee = function(){
+  this.id[0]='whiteee';
+  const r = this.bounds[4]-this.bounds[2];
+  this.bounds[4]=this.bounds[2]+this.bounds[14]-this.bounds[0]-r;
+  this.bounds[6]=this.bounds[2]+this.bounds[14]-this.bounds[0]-r;
+  this.bounds[8]-=r;
+  this.bounds[10]-=r;
+  this.bounds[11]-=r;
+  this.bounds[13]-=r;
+}
+Tile.prototype.white2reddd = function(){
+  this.id[0]='reddd';
+  const r = this.bounds[8]-this.bounds[6];
+  this.bounds[4]=this.bounds[2]+r;
+  this.bounds[6]=this.bounds[2]+r;
+  this.bounds[8]+=r;
+  this.bounds[10]+=r;
+  this.bounds[11]+=r;
+  this.bounds[12]=this.bounds[10]-r;
+  this.bounds[13]=this.bounds[11];
+  this.bounds[14]=this.bounds[12];
+  this.bounds[15]=this.bounds[13]-r;
+}
+Tile.prototype.rotateYlo = function(){
+    const rmax = this.bounds[4]-this.bounds[2];
+    const rmin = this.bounds[8]-this.bounds[6];
+    this.bounds[0]=this.bounds[0]+rmax+rmin;
+    this.bounds[2]=this.bounds[2]+rmax+rmin;
+    this.bounds[4]=this.bounds[4]+rmin-rmax;
+    this.bounds[6]=this.bounds[6]+rmin-rmax;
+    this.bounds[8]=this.bounds[8]-rmax-rmin;
+    this.bounds[10]=this.bounds[10]-rmax-rmin;
+}
+var boundsss = [];
+boundsss.push(0,0);
+boundsss.push(0,1);
+boundsss.push(r2-1,1);
+boundsss.push(r2-1,r2);
+boundsss.push(r2,r2);
+boundsss.push(r2,r2-1);
+boundsss.push(1,r2-1);
+boundsss.push(1,0);
+
+var reddd = new Tile(['reddd'],[],boundsss,8);
+
+var boundsss1 = [];
+boundsss1.push(0,0);
+boundsss1.push(0,1);
+boundsss1.push(2-r2,1);
+boundsss1.push(2-r2,r2);
+boundsss1.push(1,r2);
+boundsss1.push(1,0);
+boundsss1.push(1,0);
+boundsss1.push(1,0);
+
+var whiteee = new Tile(['whiteee'],[],boundsss1,8);
+
+//[2]
+
+function AmmannA4Sub(tile){
+  switch(tile.id[0]){
+    case 'reddd':
+
+      var newtiles = [];
+      newtiles.push(tile);
+
+      var newr1 = tile.myclone();
+      newr1.id.push("newr1");
+      newr1.rotate(tile.bounds[0]+r2/2,tile.bounds[1]+r2/2,Math.PI/2);
+      newr1.shift(1,1);
+      newtiles.push(newr1);
+
+      var newr2 = tile.myclone();
+      newr2.id.push("newr2");
+      newr2.shift(2,2);
+      newtiles.push(newr2);
+
+      var neww1 = tile.myclone();
+      neww1.id.push("neww1");
+      neww1.red2whiteee();
+      neww1.shift(1+r2,1);
+      newtiles.push(neww1);
+
+      var neww2 = tile.myclone();
+      neww2.id.push("neww2");
+      neww2.red2whiteee();
+      neww2.rotate(tile.bounds[0]+0.5,tile.bounds[7]-(r2-1)/2,Math.PI);
+      newtiles.push(neww2);
+
+      var neww3 = tile.myclone();
+      neww3.id.push("neww3");
+      neww3.red2whiteee();
+      neww3.rotateYlo();
+      neww3.rotate(tile.bounds[0]+(1+r2)/2,tile.bounds[1]+(1+r2)/2,Math.PI/2);
+      newtiles.push(neww3);
+
+      var neww4 = tile.myclone();
+      neww4.id.push("neww4");
+      neww4.red2whiteee();
+      neww4.rotateYlo();
+      neww4.rotate(tile.bounds[0]+(1+r2)/2,tile.bounds[1]+(1+r2)/2,-Math.PI/2);
+      neww4.shift(1,1);
+      newtiles.push(neww4);
+
+      return newtiles;
+
+    case 'whiteee':
+
+      var newtiles = [];
+
+      var neww1 = tile.myclone();
+      neww1.id.push("neww1");
+      neww1.rotate(tile.bounds[0]+0.5,tile.bounds[7]-(r2-1)/2,Math.PI);
+      newtiles.push(neww1);
+
+      var neww2 = tile.myclone();
+      neww2.id.push("neww2");
+      neww2.rotateYlo();
+      neww2.rotate(tile.bounds[0]+(1+r2)/2,tile.bounds[1]+(1+r2)/2,Math.PI/2);
+      newtiles.push(neww2);
+
+      var neww3 = tile.myclone();
+      neww3.id.push("neww3");
+      neww3.rotateYlo();
+      neww3.rotate(tile.bounds[0]+(1+r2)/2,tile.bounds[1]+(1+r2)/2,-Math.PI);
+      neww3.shift(0,1);
+      newtiles.push(neww3);
+
+      var newr1 = tile.myclone();
+      newr1.id.push("newr1");
+      newr1.white2reddd();
+      newtiles.push(newr1);
+
+      var newr2 = tile.myclone();
+      newr2.id.push("newr2");
+      newr2.white2reddd();
+      newr2.rotate(tile.bounds[0]+r2/2,tile.bounds[1]+r2/2,Math.PI/2);
+      newr2.shift(1,1);
+      newtiles.push(newr2);
+
+      return newtiles;
+
+    default:
+      console.log("Error: undefined tile type for mysubstitution, id="+tile.id);
+  }
+}
+
+//[3]
+
+var AmmannA4dupinfos = [];
+var AmmannA4dupinfosoriented = [];
+
+//[4] [5]
+
+var AmmannA4neighbors = "I am lazy";
+
+// [6] 
+
+var AmmannA4neighbors2bounds = new Map();
+AmmannA4neighbors2bounds.set('reddd',[[0,1,2,3],[2,3,4,5],[4,5,6,7],[6,7,8,9],[8,9,10,11],[10,11,12,13],[12,13,14,15],[14,15,0,1]]);
+AmmannA4neighbors2bounds.set('whiteee',[[0,1,2,3],[2,3,4,5],[4,5,6,7],[6,7,8,9],[8,9,10,11],[10,11,12,13],[12,13,14,15],[14,15,0,1]]);
+
+// [7]
+
+AmmannA4decorate = new Map();
+AmmannA4decorate.set('reddd',0);
+AmmannA4decorate.set('whiteee',1);
+
+//[Tiling]
+
+Tiling.AmmannA4 = function({iterations}={}){
+    var tiles = [];
+    var rrred = reddd.myclone();
+    tiles.push(rrred);
+
+    tiles = substitute(
+      iterations,
+      tiles,
+      1,
+      AmmannA4Sub,
+      AmmannA4dupinfos,
+      AmmannA4dupinfosoriented,
+      AmmannA4neighbors,
+      AmmannA4neighbors2bounds,
+      AmmannA4decorate
+    );
+
+    return new Tiling(tiles);
+}

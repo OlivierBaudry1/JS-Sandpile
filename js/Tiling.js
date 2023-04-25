@@ -32,7 +32,10 @@ class Tile{
 		
 		this.svg_color = "000000";
 	}
-        
+		changeLimite(limite){
+			this.limit=limite;
+		}
+
         // [1.1] homemade Tile cloning method
         myclone(){
                 var newid=JSON.parse(JSON.stringify(this.id));
