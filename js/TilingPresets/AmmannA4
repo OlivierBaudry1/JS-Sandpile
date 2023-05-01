@@ -36,26 +36,26 @@ Tile.prototype.rotateYlo = function(){
     this.bounds[10]=this.bounds[10]-rmax-rmin;
 }
 var boundsss = [];
-boundsss.push(0,0);
-boundsss.push(0,1);
-boundsss.push(r2-1,1);
-boundsss.push(r2-1,r2);
-boundsss.push(r2,r2);
-boundsss.push(r2,r2-1);
-boundsss.push(1,r2-1);
-boundsss.push(1,0);
+boundsss.push(-r2/2,-r2/2);
+boundsss.push(-r2/2,1-r2/2);
+boundsss.push(r2/2-1,1-r2/2);
+boundsss.push(r2/2-1,r2/2);
+boundsss.push(r2/2,r2/2);
+boundsss.push(r2/2,r2/2-1);
+boundsss.push(1-r2/2,r2/2-1);
+boundsss.push(1-r2/2,-r2/2);
 
 var reddd = new Tile(['reddd'],[],boundsss,8);
 
 var boundsss1 = [];
-boundsss1.push(0,0);
-boundsss1.push(0,1);
-boundsss1.push(2-r2,1);
-boundsss1.push(2-r2,r2);
-boundsss1.push(1,r2);
-boundsss1.push(1,0);
-boundsss1.push(1,0);
-boundsss1.push(1,0);
+boundsss1.push(-0.5,-r2/2);
+boundsss1.push(-0.5,1-r2/2);
+boundsss1.push(3/2-r2,1-r2/2);
+boundsss1.push(3/2-r2,r2/2);
+boundsss1.push(0.5,r2/2);
+boundsss1.push(0.5,-r2/2);
+boundsss1.push(0.5,-r2/2);
+boundsss1.push(0.5,-r2/2);
 
 var whiteee = new Tile(['whiteee'],[],boundsss1,8);
 
@@ -66,45 +66,61 @@ function AmmannA4Sub(tile){
     case 'reddd':
 
       var newtiles = [];
-      newtiles.push(tile);
 
       var newr1 = tile.myclone();
       newr1.id.push("newr1");
-      newr1.rotate(tile.bounds[0]+r2/2,tile.bounds[1]+r2/2,Math.PI/2);
-      newr1.shift(1,1);
+      newr1.rotate((tile.bounds[0]+tile.bounds[8])/2,(tile.bounds[0]+tile.bounds[8])/2,Math.PI/2) 
       newtiles.push(newr1);
 
-      var newr2 = tile.myclone();
-      newr2.id.push("newr2");
-      newr2.shift(2,2);
-      newtiles.push(newr2);
+      if(tile.bounds[8]>tile.bounds[0]) {
+        var newr2 = tile.myclone();
+        newr2.id.push("newr2");
+        newr2.shift(r2*(tile.bounds[8]-tile.bounds[0])/2,r2*(tile.bounds[8]-tile.bounds[0])/2);
+        newtiles.push(newr2);
 
-      var neww1 = tile.myclone();
-      neww1.id.push("neww1");
-      neww1.red2whiteee();
-      neww1.shift(1+r2,1);
-      newtiles.push(neww1);
+        var newr3 = tile.myclone();
+        newr3.id.push("newr3");
+        newr3.shift(-r2*(tile.bounds[8]-tile.bounds[0])/2,-r2*(tile.bounds[8]-tile.bounds[0])/2);
+        newtiles.push(newr3);
+      } else {
+        var newr2 = tile.myclone();
+        newr2.id.push("newr2");
+        newr2.shift(r2*(tile.bounds[8]-tile.bounds[0])/2,-r2*(tile.bounds[8]-tile.bounds[0])/2);
+        newtiles.push(newr2);
 
-      var neww2 = tile.myclone();
-      neww2.id.push("neww2");
-      neww2.red2whiteee();
-      neww2.rotate(tile.bounds[0]+0.5,tile.bounds[7]-(r2-1)/2,Math.PI);
-      newtiles.push(neww2);
+        var newr3 = tile.myclone();
+        newr3.id.push("newr3");
+        newr3.shift(-r2*(tile.bounds[8]-tile.bounds[0])/2,r2*(tile.bounds[8]-tile.bounds[0])/2);
+        newtiles.push(newr3);
+      }
 
-      var neww3 = tile.myclone();
-      neww3.id.push("neww3");
-      neww3.red2whiteee();
-      neww3.rotateYlo();
-      neww3.rotate(tile.bounds[0]+(1+r2)/2,tile.bounds[1]+(1+r2)/2,Math.PI/2);
-      newtiles.push(neww3);
+      // var neww1 = tile.myclone();
+      // neww1.id.push("neww1");
+      // neww1.red2whiteee();
+      // neww1.shift(tile.bounds[10]-tile.bounds[0],0);
+      // newtiles.push(neww1);
 
-      var neww4 = tile.myclone();
-      neww4.id.push("neww4");
-      neww4.red2whiteee();
-      neww4.rotateYlo();
-      neww4.rotate(tile.bounds[0]+(1+r2)/2,tile.bounds[1]+(1+r2)/2,-Math.PI/2);
-      neww4.shift(1,1);
-      newtiles.push(neww4);
+      // var neww2 = tile.myclone();
+      // neww2.id.push("neww2");
+      // neww2.red2whiteee();
+      // neww2.rotate(tile.bounds[0],(tile.bounds[7]+tile.bounds[1])/2,Math.PI);
+      // newtiles.push(neww2);
+
+      // var neww3 = tile.myclone();
+      // neww3.id.push("neww3");
+      // neww3.red2whiteee();
+      // neww3.rotateYlo();
+      // neww3.rotate(tile.bounds[0],tile.bounds[1],-Math.PI/2);
+      // neww3.shift(0,tile.bounds[3]-tile.bounds[1]+tile.bounds[7]-tile.bounds[1]);
+      // newtiles.push(neww3);
+
+      // var neww4 = tile.myclone();
+      // neww4.id.push("neww4");
+      // neww4.red2whiteee();
+      // neww4.rotateYlo();
+      // neww4.rotate(tile.bounds[14],tile.bounds[15],Math.PI/2);
+      // neww4.shift(tile.bounds[4]-tile.bounds[2],0);
+      // newtiles.push(neww4);
 
       return newtiles;
 
@@ -114,13 +130,16 @@ function AmmannA4Sub(tile){
 
       var neww1 = tile.myclone();
       neww1.id.push("neww1");
-      neww1.rotate(tile.bounds[0]+0.5,tile.bounds[7]-(r2-1)/2,Math.PI);
+      console.log(tile.bounds[0]);
+      neww1.rotate((tile.bounds[0]+tile.bounds[14])/2,(tile.bounds[7]+tile.bounds[5])/2,Math.PI);
+      neww1.shift((tile.bounds[11]-tile.bounds[9])/2,tile.bounds[1]-tile.bounds[3]);
       newtiles.push(neww1);
 
       var neww2 = tile.myclone();
       neww2.id.push("neww2");
       neww2.rotateYlo();
       neww2.rotate(tile.bounds[0]+(1+r2)/2,tile.bounds[1]+(1+r2)/2,Math.PI/2);
+      neww2.shift((tile.bounds[11]-tile.bounds[9])/2,tile.bounds[1]-tile.bounds[3]);
       newtiles.push(neww2);
 
       var neww3 = tile.myclone();
@@ -128,11 +147,13 @@ function AmmannA4Sub(tile){
       neww3.rotateYlo();
       neww3.rotate(tile.bounds[0]+(1+r2)/2,tile.bounds[1]+(1+r2)/2,-Math.PI);
       neww3.shift(0,1);
+      neww3.shift((tile.bounds[11]-tile.bounds[9])/2,tile.bounds[1]-tile.bounds[3]);
       newtiles.push(neww3);
 
       var newr1 = tile.myclone();
       newr1.id.push("newr1");
       newr1.white2reddd();
+      newr1.shift((tile.bounds[11]-tile.bounds[9])/2,tile.bounds[1]-tile.bounds[3]);
       newtiles.push(newr1);
 
       var newr2 = tile.myclone();
@@ -140,6 +161,7 @@ function AmmannA4Sub(tile){
       newr2.white2reddd();
       newr2.rotate(tile.bounds[0]+r2/2,tile.bounds[1]+r2/2,Math.PI/2);
       newr2.shift(1,1);
+      newr2.shift((tile.bounds[11]-tile.bounds[9])/2,tile.bounds[1]-tile.bounds[3]);
       newtiles.push(newr2);
 
       return newtiles;
@@ -175,6 +197,8 @@ AmmannA4decorate.set('whiteee',1);
 Tiling.AmmannA4 = function({iterations}={}){
     var tiles = [];
     var rrred = reddd.myclone();
+    var w = whiteee.myclone();
+
     tiles.push(rrred);
 
     tiles = substitute(
